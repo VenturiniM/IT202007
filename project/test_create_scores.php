@@ -8,8 +8,8 @@ if (!has_role("Admin")) {
 ?>
 
 <form method="POST">
-	<label>Name</label>
-	<input name="name"/>
+	<label>id</label>
+	<input name="id"/>
 	<label>user_id</label>
 	<input name="user_id" type="number"/>
 	<label>Score</label>
@@ -22,15 +22,15 @@ if (!has_role("Admin")) {
 <?php
 if(isset($_POST["save"])){
 	//TODO add proper validation/checks
-	$name = $_POST["name"];
+	$id = $_POST["id"];
 	$userid = $_POST["user_id"];
 	$score = $_POST["score"];
 	$created = date('Y-m-d H:i:s');//calc
 	$user = get_user_id();
 	$db = getDB();
-	$stmt = $db->prepare("INSERT INTO Scores (id, user_id, score, created) VALUES(:name, :userid, :score, :created)");
+	$stmt = $db->prepare("INSERT INTO Scores (id, user_id, score, created) VALUES(:id, :userid, :score, :created)");
 	$r = $stmt->execute([
-		":name"=>$name,
+		":id"=>$id,
 		":userid"=>$userid,
 		":score"=>$score,
 		":created"=>$created,
