@@ -176,7 +176,7 @@ window.addEventListener('keyup', function(event) {
 
 // Clear the canvas
 function erase() {
-  context.fillStyle = '#FFFFFF';
+  context.fillStyle = '#FFFFF1';
   context.fillRect(0, 0, 600, 400);
 }
 
@@ -191,8 +191,7 @@ function shoot() {
 
 //Restart the game
 function restart(){
-     menu();
-     window.addEventListener('click', startGame);
+     location.reload();
     
   }
 
