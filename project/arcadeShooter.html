@@ -195,8 +195,22 @@ function restart(){
     
   }
 
-
-
+//Send scores 
+function sendScore(){
+ 
+	let xhttp = new XMLHttpRequest();
+	var url = "send_game_scores.php"
+	var score = document.getElementById("score").value;
+	xhttp.open("POST", url, true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.onreadystatechange = function(){
+	   if(xhttp.readyState == 4 && xhttp.status == 200) {
+		document.getElementById("status").innerHTML = xhttp.responseText;
+		}
+	    }
+	xhttp.send("score="+score);
+  
+ }
 // The main draw loop
 function draw() {
  if (!paused){
