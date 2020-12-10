@@ -9,11 +9,7 @@ if(isset($id)) {
     $stmt = $db->prepare("SELECT Users.username, user_id, score FROM Scores as Scores JOIN Users on Scores.user_id = Users.id where Scores.user_id = :id ORDER BY Scores.id DESC LIMIT 10");
     $r = $stmt->execute([":id" => $id]);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (!$result) {
-        $error = $stmt->errorInfo();
-        flash($error[2]);
-    }
-}
+ }
 ?>
 <?php if (count($result) > 0): ?>
     <?php foreach ($result as $r): ?>
@@ -28,4 +24,4 @@ if(isset($id)) {
 <?php else: ?>
     <p>No results</p>
 <?php endif; ?>
-<?php require(__DIR__ . "/partials/flash.php");
+<?php require(__DIR__ . "/partials/flash.php"); ?>
