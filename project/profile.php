@@ -64,8 +64,8 @@ if (isset($_POST["saved"])) {
         }
     }
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id, points = :points");
-        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id(), ":points" => get_user_points()]);
+        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
+        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
         if ($r) {
             flash("Updated profile");
         }
@@ -90,8 +90,8 @@ if (isset($_POST["saved"])) {
             }
         }
 //fetch/select fresh data in case anything changed
-        $stmt = $db->prepare("SELECT email, username, points from Users WHERE id = :id LIMIT 1, points = :points");
-        $stmt->execute([":id" => get_user_id(), ":points"=> get_user_points()]);
+        $stmt = $db->prepare("SELECT email, username, points from Users WHERE id = :id LIMIT 1");
+        $stmt->execute([":id" => get_user_id()]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $email = $result["email"];
@@ -100,18 +100,16 @@ if (isset($_POST["saved"])) {
             //let's update our session too
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["username"] = $username;
-	    $_SESSION["user"]["points"] = $points;
         }
     }
     else {
         //else for $isValid, though don't need to put anything here since the specific failure will output the message
     }
-$points = "SELECT points FROM Users";
 }
 
 ?>
   <body>
-	Points: <?php echo ($points); ?>
+   <br />
     <form method="POST">
         <label for="email">Email</label>
         <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
@@ -123,6 +121,16 @@ $points = "SELECT points FROM Users";
         <label for="cpw">Confirm Password</label>
         <input type="password" name="confirm"/>
         <input type="submit" name="saved" value="Save Profile"/>
-    </form>
+ <br /> 
+ <br />
+   <?php 
+	echo ("Points: ");
+	include "userPoints.php";
+   ?>
+ <br /> 
+ <br />
+    <u>Last 10 Scores: </u>
+ <br /> 
+   <?php include "userLastTen.php" ?>
   </body>
 <?php require(__DIR__ . "/partials/flash.php");
