@@ -11,6 +11,7 @@ if(isset($id)) {
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
  }
 ?>
+
 <?php if (count($result) > 0): ?>
     <?php foreach ($result as $r): ?>
         <div style=" alignment: center ">
