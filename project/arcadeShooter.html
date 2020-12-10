@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+   <link rel="stylesheet" href="static/css/styles.css">
+</head>
+
 <canvas id="canvas" width="600" height="400" tabindex="1"></canvas>
 <style>
 #canvas {
@@ -131,9 +134,7 @@ function endGame() {
   context.fillText('Final Score: ' + score, canvas.width / 2, (canvas.height / 2)+35);
   context.font = '18px Arial';
   context.fillText('Press R to Play Again', canvas.width / 2, (canvas.height / 2)+140);
-
-
-}
+ }
 
 // Listen for keydown events
 window.addEventListener('keydown', function(event) {
@@ -197,19 +198,18 @@ function restart(){
 
 //Send scores 
 function sendScore(){
- 
-	let xhttp = new XMLHttpRequest();
-	var url = "send_game_scores.php"
-	var score = document.getElementById("score").value;
-	xhttp.open("POST", url, true);
+  	let xhttp = new XMLHttpRequest();
+	let myscore = score;
+	xhttp.onreadystatechange = function () {
+           if (this.readyState == 4 && this.status == 200) {
+               console.log(this.responseText);
+               let json = JSON.parse(this.responseText);
+             }
+        };	
+	xhttp.open("POST", "send_game_scores.php", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.onreadystatechange = function(){
-	   if(xhttp.readyState == 4 && xhttp.status == 200) {
-		document.getElementById("status").innerHTML = xhttp.responseText;
-		}
-	    }
-	xhttp.send("score="+score);
-  
+	xhttp.send("sendscore="+ myscore);
+
  }
 // The main draw loop
 function draw() {
@@ -285,6 +285,7 @@ function draw() {
   // End or continue the game
   if (gameOver) {
     endGame();
+    sendScore();
   } else {
     window.requestAnimationFrame(draw);
   }
@@ -296,6 +297,5 @@ canvas.focus();
 	
 
 </script>
-</head>
 </html>
 
