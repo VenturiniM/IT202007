@@ -6,14 +6,28 @@ if (!is_logged_in()) {
 
 ?>
 <?php
+//Update User Points. Sum from points_change column
 $id = get_user_id();
-$points = 0;
+if(isset($id)) {
+   $db = getDB();
+   $stmt = $db ->prepare("UPDATE Users set points = (SELECT IFNULL(SUM(points_change), 0) FROM PointsHistory points_change where points_change.user_id = :id) WHERE id = :id");
+   $r = $stmt->execute([":id" => $id]);
+ }
+
+?>
+<?php
+//Get points column (used to diplay in profile)
+$id = get_user_id();
+$result = [];
 if(isset($id)) {
     $db = getDB();
     $stmt = $db->prepare("SELECT points FROM Users WHERE id = $id");
-    $r = $stmt->execute(["points" => $points]);
+    $r = $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$result) {
+        $e = $stmt->errorInfo();
+        flash($e[2]);
+    }
 }
 ?>
-<?php safer_echo($points); ?>
-
 
