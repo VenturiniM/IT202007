@@ -15,9 +15,9 @@ if (isset($_POST["name"])) {
     }
     $cost++;
     //TODO other validation
-    include "userPoints.php";
-    //$balance = getPoints();
-    if ($cost > $points) {
+   // include "userPoints.php";
+    $balance = getPoints();
+    if ($cost > $balance) {
         flash("You can't afford to create this competition");
     }
     else {
