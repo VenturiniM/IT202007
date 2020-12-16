@@ -21,7 +21,7 @@ if (isset($_POST["join"])) {
                 $stmt = $db->prepare("INSERT INTO UserCompetitions (competition_id, user_id) VALUES(:cid, :uid)");
                 $r = $stmt->execute([":cid" => $_POST["cid"], ":uid" => get_user_id()]);
                 if ($r) {
-                    flash("Successfully join competition");
+                    flash("Successfully join competition", "success");
                     die(header("Location: #"));
                 }
                 else {
@@ -29,7 +29,7 @@ if (isset($_POST["join"])) {
                 }
             }
             else {
-                flash("You can't afford to join this competition, try again later");
+                flash("You can't afford to join this competition, try again later", "warning");
             }
         }
         else {
@@ -40,7 +40,7 @@ if (isset($_POST["join"])) {
         flash("Competition is unavailable", "warning");
     }
 }
-$stmt = $db->prepare("SELECT c.*, UC.user_id as reg FROM Competitions c LEFT JOIN (SELECT * FROM UserCompetitions where user_id = :id) as UC on c.id = UC.competition_id WHERE c.expires > current_timestamp AND paid_out = 0 ORDER BY expires ASC");
+$stmt = $db->prepare("SELECT c.*, UC.user_id as reg FROM Competitions c LEFT JOIN (SELECT * FROM UserCompetitions where user_id = :id) as UC on c.id = UC.competition_id WHERE c.expires > current_timestamp AND paid_out = 0 AND (UC.user_id = :id OR c.user_id = :id) ORDER BY expires ASC");
 $r = $stmt->execute([":id" => get_user_id(),]);
 if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -50,14 +50,17 @@ else {
 }
 ?>
     <div class="container-fluid">
-        <h3><u>Active Competitions </u></h3>
+        <h3>My Competitions (Created and Registered)</h3>
         <div class="list-group">
             <?php if (isset($results) && count($results)): ?>
-                 <?php foreach ($results as $r): ?>
+                <?php foreach ($results as $r): ?>
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col">
-                                Competition Name: <?php safer_echo($r["name"]); ?>
+                               Competition Name: <?php safer_echo($r["name"]); ?>
+                                <?php if ($r["user_id"] == get_user_id()): ?>
+                                    (Created)
+                                <?php endif; ?>
                             </div>
                             <div class="col">
                                 Participants: <?php safer_echo($r["participants"]); ?>
