@@ -127,6 +127,7 @@ if (isset($_POST["saved"])) {
 	//user points
 	echo ("Points: ");
 	include "userPoints.php";
+	echo ($result["points"]);
    ?>
  <br /> 
  <br />
