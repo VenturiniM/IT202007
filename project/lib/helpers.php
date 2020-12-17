@@ -67,6 +67,20 @@ function getMessages() {
     }
     return array();
 }
-
+function getPoints() {
+    $id = get_user_id();
+$result = [];
+if(isset($id)) {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT points FROM Users WHERE id = $id");
+    $r = $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$result) {
+        $e = $stmt->errorInfo();
+        flash($e[2]);
+    }
+}
+   return ($result["points"]);
+}
 //end flash
 ?>
