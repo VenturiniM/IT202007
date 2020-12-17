@@ -13,7 +13,8 @@ if (!$result) {
    }
 
 ?>
-
+<div> <b><u> High Scores for the past week: </b> </u></div>
+<br>
 <?php if (count($result) > 0): ?>
     <?php foreach ($result as $r): ?>
         <div style=" alignment: center ">
