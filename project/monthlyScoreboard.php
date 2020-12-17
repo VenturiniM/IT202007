@@ -15,7 +15,7 @@ $currMonth = getdate(date("U"));
 ?>
 
 <div style=" alignment: center ">
-      <div>High Scores for <?php echo "$currMonth[month]"; ?>:</div>
+      <div><b><u>High Scores for <?php echo "$currMonth[month]"; ?>:</u></b></div>
  </div>
       <br>
 

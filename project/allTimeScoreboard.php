@@ -12,6 +12,8 @@ if (!$result) {
        flash($error[2]);
    }
 ?>
+<div> <b><u> All Time High Scores: </b> </u></div>
+<br>
 
 <?php if (count($result) > 0): ?>
     <?php foreach ($result as $r): ?>
