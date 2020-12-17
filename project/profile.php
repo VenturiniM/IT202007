@@ -90,12 +90,13 @@ if (isset($_POST["saved"])) {
             }
         }
 //fetch/select fresh data in case anything changed
-        $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
+        $stmt = $db->prepare("SELECT email, username, points from Users WHERE id = :id LIMIT 1");
         $stmt->execute([":id" => get_user_id()]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $email = $result["email"];
             $username = $result["username"];
+  	    $points = $result["points"];
             //let's update our session too
             $_SESSION["user"]["email"] = $email;
             $_SESSION["user"]["username"] = $username;
@@ -106,9 +107,9 @@ if (isset($_POST["saved"])) {
     }
 }
 
-
 ?>
-
+  <body>
+   <br />
     <form method="POST">
         <label for="email">Email</label>
         <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
@@ -120,5 +121,17 @@ if (isset($_POST["saved"])) {
         <label for="cpw">Confirm Password</label>
         <input type="password" name="confirm"/>
         <input type="submit" name="saved" value="Save Profile"/>
-    </form>
+ <br /> 
+ <br />
+   <?php 
+	//user points
+	echo ("Points: ");
+	include "userPoints.php";
+   ?>
+ <br /> 
+ <br />
+    <u>Last 10 Scores: </u>
+ <br /> 
+   <?php include "userLastTen.php" ?>
+  </body>
 <?php require(__DIR__ . "/partials/flash.php");

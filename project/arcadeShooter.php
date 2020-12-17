@@ -3,6 +3,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="static/css/styles.css">
+ <br />
 </head>
 
 <canvas id="canvas" width="800" height="500" tabindex="1"></canvas>

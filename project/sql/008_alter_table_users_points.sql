@@ -1,0 +1,2 @@
+ALTER TABLE Users
+    ADD COLUMN points INT DEFAULT 0;

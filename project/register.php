@@ -44,7 +44,7 @@ if (isset($_POST["register"])) {
             $r = $stmt->execute($params);
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
-                flash("Successfully registered! Please login.");
+		flash("Successfully registered! Please login.");
             }
             else {
                 if ($e[0] == "23000") {//code for duplicate entry
@@ -72,9 +72,9 @@ if (!isset($username)) {
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required value="<?php safer_echo($email); ?>"/>
         <label for="user">Username:</label>
-        <input type="text" id="user" name="username" required maxlength="60" value="<?php safer_echo($username); ?>"/>
+        <input type="text" id="user" name="username" required minlength="3" maxlength="60" value="<?php safer_echo($username); ?>"/>
         <label for="p1">Password:</label>
-        <input type="password" id="p1" name="password" required/>
+        <input type="password" id="p1" name="password" required minlength="4" maxlength="30"/>
         <label for="p2">Confirm Password:</label>
         <input type="password" id="p2" name="confirm" required/>
         <input type="submit" name="register" value="Register"/>
